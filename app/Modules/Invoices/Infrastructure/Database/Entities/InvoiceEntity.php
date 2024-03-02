@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Invoices\Infrastructure\Database\Entities;
 
+use App\Domain\Enums\StatusEnum;
 use App\Infrastructure\Database\Entities\CompanyEntity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,6 +24,10 @@ class InvoiceEntity extends Model
         'date',
         'due_date',
         'status',
+    ];
+
+    protected $casts = [
+        'status' => StatusEnum::class,
     ];
 
     public function company(): BelongsTo

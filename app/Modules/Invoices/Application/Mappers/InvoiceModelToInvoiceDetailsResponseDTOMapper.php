@@ -11,7 +11,7 @@ use App\Modules\Invoices\API\DTO\InvoiceDetailsResponseDTO\ShipToCompanyDTO;
 use App\Modules\Invoices\Domain\Models\InvoiceModel;
 use App\Modules\Invoices\Domain\Models\InvoiceProductLineModel;
 
-class InvoiceModelToResponseDTOMapper
+class InvoiceModelToInvoiceDetailsResponseDTOMapper
 {
     public static function map(InvoiceModel $invoiceModel): InvoiceDetailsResponseDTO
     {
