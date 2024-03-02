@@ -7,11 +7,11 @@ namespace App\Modules\Invoices\API\DTO;
 use App\API\DTO\AbstractDTO;
 use Ramsey\Uuid\UuidInterface;
 
-class InvoiceApproveResponseDTO extends AbstractDTO
+class InvoiceRejectResponseDTO extends AbstractDTO
 {
     public function __construct(
         private readonly UuidInterface $id,
-        private readonly string $approvedDate
+        private readonly string $rejectedDate
     ) {
     }
 
@@ -20,8 +20,8 @@ class InvoiceApproveResponseDTO extends AbstractDTO
         return $this->id;
     }
 
-    public function getApprovedDate(): string
+    public function getRejectedDate(): string
     {
-        return $this->approvedDate;
+        return $this->rejectedDate;
     }
 }

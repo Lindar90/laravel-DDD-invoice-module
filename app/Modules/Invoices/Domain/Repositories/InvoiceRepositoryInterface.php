@@ -15,4 +15,6 @@ interface InvoiceRepositoryInterface
     public function getDetails(string $id): InvoiceModel;
 
     public function approve(string $id): InvoiceModel;
+
+    public function reject(string $id): InvoiceModel;
 }

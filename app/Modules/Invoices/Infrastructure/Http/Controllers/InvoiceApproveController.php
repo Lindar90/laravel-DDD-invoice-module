@@ -10,13 +10,16 @@ use App\Infrastructure\Http\Response\JsonSuccessResponse;
 use App\Modules\Invoices\API\DTO\InvoiceApproveRequestDTO;
 use App\Modules\Invoices\API\InvoiceFacadeInterface;
 use App\Modules\Invoices\Domain\Exceptions\InvoiceCanNotBeApprovedException;
+use App\Modules\Invoices\Domain\Exceptions\InvoiceNotFoundException;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Log\LogManager;
 
 readonly class InvoiceApproveController
 {
     public function __construct(
-        private InvoiceFacadeInterface $invoiceFacade
+        private InvoiceFacadeInterface $invoiceFacade,
+        private LogManager $logger,
     ) {
     }
 
@@ -28,11 +31,20 @@ readonly class InvoiceApproveController
             $responseDTO = $this->invoiceFacade->approve($dto);
 
             return new JsonSuccessResponse($responseDTO->toArray());
+        } catch (InvoiceNotFoundException $e) {
+            $this->logger->warning($e->getMessage());
+
+            return new JsonBadRequestResponse('Invoice not found', [
+                'id' => 'Invoice not found',
+            ]);
         } catch (InvoiceCanNotBeApprovedException $e) {
+            $this->logger->warning($e->getMessage());
+
             return new JsonBadRequestResponse('Invoice can not be approved', [
                 'id' => 'Invoice can not be approved',
             ]);
         } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
             return new JsonErrorResponse();
         }
     }

@@ -33,6 +33,22 @@ class InvoiceRepository implements InvoiceRepositoryInterface
      */
     public function approve(string $id): InvoiceModel
     {
+        return $this->updateInvoiceStatus($id, StatusEnum::APPROVED);
+    }
+
+    /**
+     * @throws InvoiceNotFoundException
+     */
+    public function reject(string $id): InvoiceModel
+    {
+        return $this->updateInvoiceStatus($id, StatusEnum::REJECTED);
+    }
+
+    /**
+     * @throws InvoiceNotFoundException
+     */
+    private function updateInvoiceStatus(string $id, StatusEnum $status): InvoiceModel
+    {
         /** @var InvoiceEntity|null $invoice */
         $invoice = InvoiceEntity::find($id);
 
@@ -40,7 +56,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
             throw new InvoiceNotFoundException($id);
         }
 
-        $invoice->status = StatusEnum::APPROVED;
+        $invoice->status = $status;
         $invoice->save();
 
         return InvoiceEntityToModelMapper::map($invoice);

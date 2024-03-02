@@ -10,10 +10,14 @@ use App\Modules\Invoices\API\DTO\InvoiceApproveRequestDTO;
 use App\Modules\Invoices\API\DTO\InvoiceApproveResponseDTO;
 use App\Modules\Invoices\API\DTO\InvoiceDetailsRequestDTO;
 use App\Modules\Invoices\API\DTO\InvoiceDetailsResponseDTO;
+use App\Modules\Invoices\API\DTO\InvoiceRejectRequestDTO;
+use App\Modules\Invoices\API\DTO\InvoiceRejectResponseDTO;
 use App\Modules\Invoices\API\InvoiceFacadeInterface;
 use App\Modules\Invoices\Application\Mappers\InvoiceModelToInvoiceApproveResponseDTO;
 use App\Modules\Invoices\Application\Mappers\InvoiceModelToInvoiceDetailsResponseDTOMapper;
+use App\Modules\Invoices\Application\Mappers\InvoiceModelToInvoiceRejectResponseDTO;
 use App\Modules\Invoices\Domain\Exceptions\InvoiceCanNotBeApprovedException;
+use App\Modules\Invoices\Domain\Exceptions\InvoiceCanNotBeRejectedException;
 use App\Modules\Invoices\Domain\Exceptions\InvoiceNotFoundException;
 use App\Modules\Invoices\Domain\Repositories\InvoiceRepositoryInterface;
 use Illuminate\Log\LogManager;
@@ -60,6 +64,31 @@ readonly class InvoiceFacade implements InvoiceFacadeInterface
         } catch (LogicException $e) {
             $this->logger->warning($e->getMessage());
             throw new InvoiceCanNotBeApprovedException($dto->getId());
+        }
+    }
+
+    /**
+     * @throws InvoiceCanNotBeRejectedException|InvoiceNotFoundException
+     */
+    public function reject(InvoiceRejectRequestDTO $dto): InvoiceRejectResponseDTO
+    {
+        $invoice = $this->invoiceRepository->getDetails($dto->getId());
+
+        $approvalDto = new ApprovalDto(
+            id: $invoice->getId(),
+            status: $invoice->getStatus(),
+            entity: 'invoice',
+        );
+
+        try {
+            $this->approvalFacade->reject($approvalDto);
+
+            $invoiceModel = $this->invoiceRepository->reject($dto->getId());
+
+            return  InvoiceModelToInvoiceRejectResponseDTO::map($invoiceModel);
+        } catch (LogicException $e) {
+            $this->logger->warning($e->getMessage());
+            throw new InvoiceCanNotBeRejectedException($dto->getId());
         }
     }
 }
