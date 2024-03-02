@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Modules\Invoices\Domain\Models;
 
-class InvoiceProductLineModel
+readonly class InvoiceProductLineModel
 {
-
     public function __construct(
         private string $name,
         private int $quantity,
         private int $unitPrice,
-    ) {}
+    ) {
+    }
 
     public function getName(): string
     {

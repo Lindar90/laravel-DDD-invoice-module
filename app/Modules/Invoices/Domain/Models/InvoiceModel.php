@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace App\Modules\Invoices\Domain\Models;
 
+use App\Domain\Enums\StatusEnum;
 use App\Domain\Models\CompanyModel;
+use Ramsey\Uuid\UuidInterface;
 
-class InvoiceModel
+readonly class InvoiceModel
 {
     public function __construct(
-        private string $id,
+        private UuidInterface $id,
         private string $number,
         private string $date,
         private string $dueDate,
+        private StatusEnum $status,
+        private string $updatedAt,
         private CompanyModel $billToCompany,
         private CompanyModel $shipToCompany,
         /** @var InvoiceProductLineModel[] */
@@ -20,7 +24,7 @@ class InvoiceModel
     ) {
     }
 
-    public function getId(): string
+    public function getId(): UuidInterface
     {
         return $this->id;
     }
@@ -63,5 +67,15 @@ class InvoiceModel
             fn (int $total, InvoiceProductLineModel $productLine) => $total + $productLine->getTotal(),
             0
         );
+    }
+
+    public function getStatus(): StatusEnum
+    {
+        return $this->status;
+    }
+
+    public function getUpdatedAt(): string
+    {
+        return $this->updatedAt;
     }
 }
