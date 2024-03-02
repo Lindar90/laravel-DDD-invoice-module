@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Modules\Invoices\Infrastructure\Database\Seeders;
 
-use App\Modules\Invoices\Domain\Enums\CurrencyEnum;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;
