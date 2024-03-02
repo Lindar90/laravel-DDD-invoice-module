@@ -13,4 +13,6 @@ interface InvoiceRepositoryInterface
      * @throws InvoiceNotFoundException
      */
     public function getDetails(string $id): InvoiceModel;
+
+    public function approve(string $id): InvoiceModel;
 }
