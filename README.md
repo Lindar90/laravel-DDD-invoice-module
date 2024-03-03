@@ -1,3 +1,49 @@
+# Evidence of work
+## Get details
+
+![img.png](evidence-of-testing-imgs/getDetails.png)
+
+## Get details (not found)
+
+![img_1.png](evidence-of-testing-imgs/getDetailNotFound.png)
+
+## Approve invoice (success)
+
+![img.png](evidence-of-testing-imgs/approve.png)
+
+## Approve invoice (already approved)
+
+![img.png](evidence-of-testing-imgs/approveNotApproved.png)
+
+## Approve invoice (not found)
+
+![img.png](evidence-of-testing-imgs/approveNotFound.png)
+
+## Reject invoice (success)
+
+![img.png](evidence-of-testing-imgs/rejectSuccess.png)
+
+## Reject invoice (already rejected)
+
+![img.png](evidence-of-testing-imgs/rejectAlreadyRejected.png)
+
+## Reject invoice (not found)
+
+![img.png](evidence-of-testing-imgs/rejectNotFound.png)
+
+## Unit tests
+
+```bash
+./vendor/bin/phpunit
+```
+
+Covers:
+- DTO to Array
+- Domain models business logic
+- Application layer facade
+
+![img.png](evidence-of-testing-imgs/unitTestsResults.png)
+
 # Recruitment Task 🧑‍💻👩‍💻
 
 ### Invoice module with approve and reject system as a part of a bigger enterprise system. Approval module exists and you should use it. It is Backend task, no Frontend is needed.
